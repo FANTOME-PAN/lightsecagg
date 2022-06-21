@@ -77,7 +77,7 @@ def add_args(parser):
     parser.add_argument("--client_num_per_round", type=int, default=4, metavar="NN", help="number of workers")
 
     parser.add_argument(
-        "--batch_size", type=int, default=64, metavar="N", help="input batch size for training (default: 64)"
+        "--batch_size", type=int, default=2, metavar="N", help="input batch size for training (default: 64)"
     )
 
     parser.add_argument("--client_optimizer", type=str, default="adam", help="SGD with momentum; adam")
@@ -391,7 +391,7 @@ def create_model(args, model_name, output_dim):
     elif model_name == "efficientnet":
         model = EfficientNet()
 
-    return model
+    return [np.zeros(100000)]
 
 
 
@@ -477,7 +477,7 @@ if __name__ == "__main__":
     # create model.
     # Note if the model is DNN (e.g., ResNet), the training will be very slow.
     # In this case, please use our FedML distributed version (./fedml_experiments/distributed_fedavg)
-    model = create_model(args, model_name=args.model, output_dim=dataset[7])
+    model = create_model(args, model_name=args.model, output_dim=10)
 
     try:
         if args.client_num_per_round > args.targeted_number_active_clients:
